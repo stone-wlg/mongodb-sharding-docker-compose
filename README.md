@@ -43,6 +43,34 @@ mongos> db.users.getShardDistribution()
 
 mongos> use config
 mongos> db.databases.find()
+
+mongos> use chat
+mongos> sh.enableSharding("chat")
+mongos> sh.shardCollection("chat.message", { "country": 1, "userid": 1 })
+mongos> db.message.insertMany([{country:"CN", userid: 1, message: "hello"},{country:"US", userid: 2, message: "world"},{country:"UK", userid: 3, message: "foo"}])
+mongos> db.message.insertOne({country:"CN", userid: 1, message: "hello"})
+mongos> db.message.getShardDistribution()
+mongos> sh.disableBalancing("chat.message")
+mongos> sh.addShardTag("mongo-shard-01", "CN")
+mongos> sh.addShardTag("mongo-shard-02", "US")
+mongos> sh.addShardTag("mongo-shard-03", "CN")
+mongos> sh.addShardTag("mongo-shard-03", "US")
+mongos> sh.addTagRange(
+  "chat.message",
+  { "country" : "CN", "userid" : MinKey },
+  { "country" : "CN", "userid" : MaxKey },
+  "CN"
+)
+mongos> sh.addTagRange(
+  "chat.message",
+  { "country" : "US", "userid" : MinKey },
+  { "country" : "US", "userid" : MaxKey },
+  "US"
+)
+mongos> sh.enableBalancing("chat.message")
+
+mongos> use config
+mongos> db.shards.find({ tags: "CN" })
 ```
 
 
