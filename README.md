@@ -30,7 +30,7 @@ You can also edit mongo-auth.init.js to change admin credentials before turning 
 
 :tropical_drink: Then you should be able to log into the cluster:
 
-    $ docker exec -it mongodbdocker_mongo-router-01_1 mongo admin  -u'admin' -p'admin'
+    $ docker exec -it mongo-router-01 mongo admin  -u'admin' -p'admin'
     MongoDB shell version v3.4.2
     connecting to: mongodb://127.0.0.1:27017/admin
     MongoDB server version: 3.4.2
