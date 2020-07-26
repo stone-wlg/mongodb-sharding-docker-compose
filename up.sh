@@ -10,6 +10,8 @@ chmod 600 mongodb.key
 ## Start the whole stack
 docker-compose up -d 
 
+sleep 15
+
 ## Config servers setup
 docker exec -it mongo-configserver-01 sh -c "mongo --port 27017 < /mongo-configserver.init.js"
 

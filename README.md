@@ -24,28 +24,34 @@ You can also edit mongo-auth.init.js to change admin credentials before turning 
       {
          user: "admin",
          pwd: "admin",
-         roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] 
+         roles: [ { role: "root", db: "admin" } ] 
       }
     )
 
 :tropical_drink: Then you should be able to log into the cluster:
 
     $ docker exec -it mongo-router-01 mongo admin  -u'admin' -p'admin'
-    MongoDB shell version v3.4.2
-    connecting to: mongodb://127.0.0.1:27017/admin
-    MongoDB server version: 3.4.2
-    mongos>
+    mongos> sh.status()
     
-  
+```mongo
+mongos> use test
+mongos> sh.enableSharding("test")
+mongos> sh.shardCollection("test.users", { "name": "hashed" })
+mongos> db.users.insertMany([{name:"1", age: 31, status: true},{name:"2", age: 32, status: false},{name:"3", age: 33, status: false}])
+mongos> db.users.find()
+mongos> db.users.getShardDistribution()
+
+mongos> use config
+mongos> db.databases.find()
+```
+
 
 :beer: And turn it down with:
 
     $ ./down.sh
     
     
-   # TODO :construction:
+# TODO :construction:
    
-  * Generate random data to populate shards through balancing 
-  * Update compose syntax to v3 
-  * Use swarm capabilities for production grade deployment 
+- Generate random data to populate shards through balancing 
   
